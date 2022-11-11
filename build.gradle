@@ -3,11 +3,10 @@ buildscript {
         mavenLocal()
         maven { url "https://repo.grails.org/grails/core" }
         maven { url "https://plugins.gradle.org/m2/" }
-        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.gradle.org/gradle/libs-releases' }
     }
     dependencies {
-        classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.15.RELEASE"
+        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
         classpath "org.grails.plugins:hibernate5:7.2.2"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.6"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.3.4"
@@ -20,7 +19,6 @@ group "org.grails.demo"
 apply plugin:"eclipse"
 apply plugin:"idea"
 apply plugin:"war"
-apply plugin: "io.spring.dependency-management"
 apply plugin:"org.grails.grails-web"
 apply plugin:"com.github.erdi.webdriver-binaries"
 apply plugin:"com.bertramlabs.asset-pipeline"
@@ -29,14 +27,7 @@ apply plugin:"org.grails.grails-gsp"
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url 'https://repo.spring.io/milestone' }
     maven { url "https://repo.grails.org/grails/core" }
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.boot:spring-boot-starter-parent:$springBootVersion"
-    }
 }
 
 configurations {
@@ -44,12 +35,6 @@ configurations {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == 'jakarta.annotation' && details.requested.name == 'jakarta.annotation-api') {
                 details.useVersion '2.0.0'
-            }
-            if (details.requested.group == 'io.micronaut') {
-                details.useVersion micronautVersion
-            }
-            if (details.requested.group == 'io.micronaut.spring' && details.requested.name == 'micronaut-spring-context') {
-                details.useVersion micronautSpringVersion
             }
         }
     }
@@ -69,7 +54,7 @@ dependencies {
     implementation "org.grails:grails-core"
     implementation "org.springframework.boot:spring-boot-starter-actuator"
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
-    implementation "org.grails:grails-web-boot"
+    implementation "org.grails:grails-boot"
     implementation "org.grails:grails-logging"
     implementation "org.grails:grails-plugin-rest"
     implementation "org.grails:grails-plugin-databinding"
@@ -81,7 +66,7 @@ dependencies {
     implementation "org.grails.plugins:async"
     implementation "org.grails.plugins:scaffolding"
     implementation "org.grails.plugins:hibernate5"
-    implementation "org.hibernate:hibernate-core:5.6.5.Final"
+    implementation "org.hibernate:hibernate-core:5.6.11.Final"
     implementation "org.grails.plugins:events"
     implementation "org.grails.plugins:gsp"
     profile "org.grails.profiles:web"
