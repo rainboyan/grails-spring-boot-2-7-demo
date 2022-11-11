@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "org.grails:grails-gradle-plugin:$grailsGradlePluginVersion"
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.15.RELEASE"
         classpath "org.grails.plugins:hibernate5:7.2.2"
         classpath "gradle.plugin.com.github.erdi.webdriver-binaries:webdriver-binaries-gradle-plugin:2.6"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:3.3.4"
@@ -43,7 +43,13 @@ configurations {
     all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             if (details.requested.group == 'jakarta.annotation' && details.requested.name == 'jakarta.annotation-api') {
-                details.useVersion '2.0.0' // Micronaut required
+                details.useVersion '2.0.0'
+            }
+            if (details.requested.group == 'io.micronaut') {
+                details.useVersion micronautVersion
+            }
+            if (details.requested.group == 'io.micronaut.spring' && details.requested.name == 'micronaut-spring-context') {
+                details.useVersion micronautSpringVersion
             }
         }
     }
